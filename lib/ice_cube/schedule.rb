@@ -14,6 +14,7 @@ module IceCube
     attr_reader :end_time
     deprecated_alias :end_date, :end_time
 
+
     # Create a new schedule
     def initialize(start_time = nil, options = {})
       self.start_time = start_time || TimeUtil.now
@@ -65,6 +66,13 @@ module IceCube
     alias :extime :add_exception_time
     deprecated_alias :exdate, :extime
     deprecated_alias :add_exception_date, :add_exception_time
+
+    # Return a boolean indicating whether a weekly rule has been added to the schedule
+    def weekly?
+      @all_recurrence_rules.any? do |rule|
+        rule.is_a? WeeklyRule
+      end
+    end
 
     # Add a recurrence rule to the schedule
     def add_recurrence_rule(rule)
@@ -250,6 +258,7 @@ module IceCube
       end
     end
 
+
     # Determine if this schedule conflicts with another schedule
     # @param [IceCube::Schedule] other_schedule - The schedule to compare to
     # @param [Time] closing_time - the last time to consider
@@ -418,6 +427,7 @@ module IceCube
       @all_exception_rules.each(&:reset)
     end
 
+
     # Find all of the occurrences for the schedule between opening_time
     # and closing_time
     # Iteration is unrolled in pairs to skip duplicate times in end of DST
@@ -504,6 +514,7 @@ module IceCube
         @all_recurrence_rules
       end
     end
+
 
   end
 

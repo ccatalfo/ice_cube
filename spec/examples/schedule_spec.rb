@@ -484,7 +484,7 @@ describe IceCube::Schedule do
       long_event = schedule.remaining_occurrences_enumerator(t0 + IceCube::ONE_DAY, :spans => true).take(1)
       expect(long_event).to eq([t0])
     end
-    
+
     it 'should find occurrences between including previous one with duration spanning start' do
       t0 = Time.utc(2015, 10, 1, 10, 00)
       schedule = IceCube::Schedule.new(t0, :duration => IceCube::ONE_HOUR)
@@ -505,7 +505,7 @@ describe IceCube::Schedule do
       schedule = IceCube::Schedule.new(t0, :duration => IceCube::ONE_HOUR)
       expect(schedule.occurs_between?(t0 + IceCube::ONE_HOUR, t0 + 2 * IceCube::ONE_HOUR, :spans => true)).to be_falsey
     end
-    
+
     it 'should quickly fetch a future time from a recurring schedule' do
       t0 = Time.utc(2000, 10, 1, 00, 00)
       t1 = Time.utc(2015, 10, 1, 12, 00)
@@ -518,7 +518,7 @@ describe IceCube::Schedule do
       expect(timing).to be < 0.1
       expect(occ).to eq([t1])
     end
-    
+
     it 'should not include occurrence ending on start time' do
       t0 = Time.utc(2015, 10, 1, 10, 00)
       schedule = IceCube::Schedule.new(t0, :duration => IceCube::ONE_HOUR / 2)
@@ -835,6 +835,22 @@ describe IceCube::Schedule do
     expect(occurrence.utc?).to eq(start_time.utc?) if start_time.respond_to? :utc?
     expect(occurrence.zone).to eq(start_time.zone)
     occurrence.utc_offset == start_time.utc_offset
+  end
+
+  describe :weekly? do
+    it 'should return true if a weekly rule has been added' do
+      schedule = IceCube::Schedule.new(Time.local(2012,2,7))
+      schedule.add_recurrence_rule IceCube::Rule.weekly(2).day(:tuesday, :sunday)
+      puts schedule.recurrence_rules
+      schedule.weekly?.should == true
+    end
+
+    it 'should return false if no weekly rule has been added' do
+      schedule = IceCube::Schedule.new(Time.local(2012,2,7))
+      schedule.add_recurrence_rule IceCube::Rule.daily
+      schedule.weekly?.should == false
+    end
+
   end
 
   def trap_infinite_loop_beyond(iterations)
