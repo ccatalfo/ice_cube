@@ -562,4 +562,20 @@ describe IceCube::Schedule do
     occurrence.zone.should == start_time.zone
     occurrence.utc_offset == start_time.utc_offset
   end
+
+  describe :weekly? do
+    it 'should return true if a weekly rule has been added' do
+      schedule = IceCube::Schedule.new(Time.local(2012,2,7))
+      schedule.add_recurrence_rule IceCube::Rule.weekly(2).day(:tuesday, :sunday)
+      puts schedule.recurrence_rules
+      schedule.weekly?.should == true
+    end
+
+    it 'should return false if no weekly rule has been added' do
+      schedule = IceCube::Schedule.new(Time.local(2012,2,7))
+      schedule.add_recurrence_rule IceCube::Rule.daily
+      schedule.weekly?.should == false
+    end
+
+  end
 end
