@@ -66,6 +66,13 @@ module IceCube
     deprecated_alias :exdate, :extime
     deprecated_alias :add_exception_date, :add_exception_time
 
+    # Return a boolean indicating whether a daily rule has been added to the schedule
+    def daily?
+      @all_recurrence_rules.any? do |rule|
+        rule.is_a? DailyRule
+      end
+    end
+
     # Return a boolean indicating whether a weekly rule has been added to the schedule
     def weekly?
       @all_recurrence_rules.any? do |rule|

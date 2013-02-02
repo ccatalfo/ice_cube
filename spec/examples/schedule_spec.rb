@@ -576,6 +576,18 @@ describe IceCube::Schedule do
       schedule.add_recurrence_rule IceCube::Rule.daily
       schedule.weekly?.should == false
     end
+  end
 
+  describe :daily? do
+    it 'should return true if a daily rule has been added' do
+      schedule = IceCube::Schedule.new(Time.local(2012,2,7))
+      schedule.add_recurrence_rule IceCube::Rule.daily
+      schedule.daily?.should == true
+    end
+
+    it 'should return false if no daily rule has been added' do
+      schedule = IceCube::Schedule.new(Time.local(2012,2,7))
+      schedule.daily?.should == false
+    end
   end
 end
