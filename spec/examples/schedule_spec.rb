@@ -590,4 +590,17 @@ describe IceCube::Schedule do
       schedule.daily?.should == false
     end
   end
+
+    describe :monthly? do
+      it 'should return true if a monthly rule has been added' do
+        schedule = IceCube::Schedule.new(Time.local(2012,2,7))
+        schedule.add_recurrence_rule IceCube::Rule.monthly
+        schedule.monthly?.should == true
+      end
+
+      it 'should return false if a monthly rule has not been added' do
+        schedule = IceCube::Schedule.new(Time.local(2012,2,7))
+        schedule.monthly?.should == false
+      end
+    end
 end

@@ -80,6 +80,13 @@ module IceCube
       end
     end
 
+    # Return a boolean indicating whether a monthly rule has been added to the schedule
+    def monthly?
+      @all_recurrence_rules.any? do |rule|
+        rule.is_a? MonthlyRule
+      end
+    end
+
     # Add a recurrence rule to the schedule
     def add_recurrence_rule(rule)
       @all_recurrence_rules << rule unless @all_recurrence_rules.include?(rule)
